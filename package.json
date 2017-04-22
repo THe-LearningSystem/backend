@@ -1,0 +1,48 @@
+{
+  "name": "the-learning-system-backend",
+  "version": "0.0.1",
+  "description": "THe-Learning System is a website project that improves your way of learning. Backend repository",
+  "main": "app/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/THe-LearningSystem/backend.git"
+  },
+  "keywords": [
+    "Learning",
+    "System",
+    "MongoDB",
+    "Express",
+    "Angular",
+    "NodeJS"
+  ],
+  "author": "https://github.com/THe-LearningSystem/backend/graphs/contributors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/THe-LearningSystem/backend/issues"
+  },
+  "homepage": "https://github.com/THe-LearningSystem/backend#readme",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.1",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.3",
+    "express": "^4.15.2",
+    "glob": "^7.1.1",
+    "jsonwebtoken": "^7.3.0",
+    "lodash": "^4.17.4",
+    "mongoose": "^4.9.5",
+    "morgan": "^1.8.1",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0",
+    "gulp": "^3.9.1",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-nodemon": "^2.2.1",
+    "run-sequence": "^1.2.2"
+  }
+}
