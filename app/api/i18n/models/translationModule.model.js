@@ -53,10 +53,9 @@ var TranslationModuleSchema = new Schema({
 });
 
 
-TranslationSchema.plugin(mongooseI18n, {
+TranslationModuleSchema.plugin(mongooseI18n, {
     locales: config.languageOptions.languages, defaultLocale: config.languageOptions.default
 });
-TranslationGroupSchema.plugin(uniqueValidator);
 TranslationModuleSchema.plugin(uniqueValidator);
 
 mongoose.model('Translation', TranslationModuleSchema);

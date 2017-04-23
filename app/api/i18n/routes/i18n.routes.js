@@ -11,6 +11,8 @@ module.exports = function (app, middleware) {
     app.route('/api/translations')
         .get(i18nCtrl.getAll)
         .put(i18nCtrl.create);
+    app.route('/api/translations/:translationModuleId/')
+        .get(i18nCtrl.getOneSimplified);
 
     app.route('/api/translations/:translationModuleId/groups')
         .get(i18nCtrl.getGroups)
