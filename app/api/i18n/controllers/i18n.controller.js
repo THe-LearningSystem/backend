@@ -41,8 +41,9 @@ exports.getAll = function (req, res) {
                 res.status(500)
                     .json(err);
             } else {
-                var localizeOnly = TranslationSchema.schema.methods.toJSONLocalizedOnly(translationModules, 'en');
-                console.log(req.query.simplified);
+                //TODO: get the client requested language
+                var requestedClientLanguage = 'en';
+                var localizeOnly = TranslationSchema.schema.methods.toJSONLocalizedOnly(translationModules, requestedClientLanguage);
                 if(req.query.simplified){
                     var json = myJson.simplifiedJson(localizeOnly);
                     res.json(json);
@@ -63,7 +64,9 @@ exports.getOneSimplified = function (req, res) {
                 res.status(500)
                     .json(err);
             } else {
-                var localizeOnly = TranslationSchema.schema.methods.toJSONLocalizedOnly(translationModules, 'de');
+                //TODO: get the client requested language
+                var requestedClientLanguage = 'en';
+                var localizeOnly = TranslationSchema.schema.methods.toJSONLocalizedOnly(translationModules, requestedClientLanguage);
                 var json = myJson.simplifiedJson(localizeOnly);
                 res.json(json);
             }
