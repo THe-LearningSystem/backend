@@ -9,54 +9,54 @@ var config = require('../../../config'),
     uniqueValidator = require('mongoose-unique-validator'),
     Schema = mongoose.Schema;
 
-var LessonsSchema = new Schema({
+var TranslationSchema = new Schema({
+    //the GroupName
     name: {
         type: String,
         required: true
+    },
+    values: {
+        type: String,
+        required: true,
+        i18n: true
     }
+
 });
-var SectionsSchema = new Schema({
+
+
+var TranslationGroupSchema = new Schema({
+    //the GroupName
     name: {
         type: String,
         required: true
     },
     description: {
-        type: String,
-        default: '',
-        trim: true
+        type: String
     },
-    lessons:[LessonsSchema]
+    translation:[TranslationSchema]
+
 });
-var CourseSchema = new Schema({
+
+
+var TranslationModuleSchema = new Schema({
+    //the translation Modul name
     name: {
         type: String,
         required: true,
-        i18n: true,
         unique: true
     },
-    test: {
-        type: String,
-        i18n: true
-    },
     description: {
-        type: String,
-        default: '',
-        trim: true
+        type: String
     },
-    urlName: {
-        type: String,
-        required: true,
-        index: {
-            unique: true,
-            sparse: true
-        }
-    },
-    sections: [SectionsSchema]
+    groups: [TranslationGroupSchema]
 
 });
-CourseSchema.plugin(mongooseI18n, {
+
+
+TranslationSchema.plugin(mongooseI18n, {
     locales: config.languageOptions.languages, defaultLocale: config.languageOptions.default
 });
-CourseSchema.plugin(uniqueValidator);
+TranslationGroupSchema.plugin(uniqueValidator);
+TranslationModuleSchema.plugin(uniqueValidator);
 
-mongoose.model('Course', CourseSchema);
+mongoose.model('Translation', TranslationModuleSchema);

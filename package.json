@@ -34,6 +34,8 @@
     "jsonwebtoken": "^7.3.0",
     "lodash": "^4.17.4",
     "mongoose": "^4.9.5",
+    "mongoose-i18n-localize": "git+https://github.com/MRisto/mongoose-i18n-localize.git",
+    "mongoose-unique-validator": "^1.0.5",
     "morgan": "^1.8.1",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1"

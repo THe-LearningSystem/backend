@@ -5,6 +5,7 @@
  */
 var _ = require('lodash'),
     password = require('passport'),
+    passwordJwtStrategies = require('../passport'),
     User = require('../api/users/models/users.model'),
     Right = require('../api/acl/models/rights.model');
 

@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
  */
 exports.create = function (req, res) {
     var course = new Course(req.body);
-
+    console.log("create", req.body);
     course.save(function (err) {
         if (err) {
             return res.status(422).send({
@@ -38,7 +38,9 @@ exports.getAll = function (req, res) {
                 res.status(500)
                     .json(err);
             } else {
-                res.json(courses);
+                console.log(Course.schema.methods);
+                var test = Course.schema.methods.toJSONLocalizedOnly(courses, 'de');
+                res.json(test);
             }
         });
 };

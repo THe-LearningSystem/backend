@@ -9,17 +9,20 @@ var config = require('./config'),
     mongoose = require('mongoose');
 
 
-module.exports.connect = function () {
-    _.forEach(config.files.models, function (modelPath) {
-        require(path.resolve(modelPath));
-    });
+module.exports.connect = function (cb) {
 
     mongoose.Promise = global.Promise;
     mongoose.connect(config.db.uri, config.db.options, function (err) {
+
+
         if (err) {
             console.error('Could not connect to MongoDB!', err);
         } else {
+            _.forEach(config.files.models, function (modelPath) {
+                require(path.resolve(modelPath));
+            });
             mongoose.set('debug', true);
+            if (cb) cb();
         }
     });
 };
