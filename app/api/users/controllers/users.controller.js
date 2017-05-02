@@ -8,8 +8,24 @@ var path = require('path'),
     passport = require('passport'),
     User = mongoose.model('User');
 
+
+exports.getUsers = function (req, res) {
+    User
+        .find()
+        .select('-password -__v')
+        .populate('roles', '-rights -description -__v')
+        .exec(function (err, users) {
+            if (err) {
+                return res.status(422).send(err);
+            } else {
+                res.json(users);
+            }
+        });
+};
+
+
 /**
- * Signout
+ * Unique
  */
 exports.isUsernameUnique = function (req, res) {
     var username = req.params.username;
@@ -46,6 +62,29 @@ exports.isEmailUnique = function (req, res) {
             } else {
                 response.status = 200;
                 res.status(response.status).json();
+            }
+        });
+};
+
+
+exports.update = function (req, res) {
+    console.log("here", req.body, req.params);
+    User
+        .findOne({_id: req.params.userId})
+        .exec(function (err, user) {
+            if (err) {
+                console.log("test");
+                res.status(500)
+                    .json(err);
+            } else {
+                user.roles = req.body.roles;
+                user.save(function () {
+                    if (err) {
+                        res.send({msg: err});
+                    } else {
+                        res.send({msg: "Updated User successful."});
+                    }
+                })
             }
         });
 };

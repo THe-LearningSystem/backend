@@ -15,6 +15,7 @@ exports.create = function (req, res) {
     console.log("create", req.body);
     course.save(function (err) {
         if (err) {
+            console.log(err);
             return res.status(422).send({
                 message: err
             });
@@ -39,8 +40,8 @@ exports.getAll = function (req, res) {
                     .json(err);
             } else {
                 console.log(Course.schema.methods);
-                var test = Course.schema.methods.toJSONLocalizedOnly(courses, 'de');
-                res.json(test);
+                // var test = Course.schema.methods.toJSONLocalizedOnly(courses, 'de');
+                res.json(courses);
             }
         });
 };
@@ -50,24 +51,34 @@ exports.getAll = function (req, res) {
  */
 exports.getOne = function (req, res) {
     var id = req.params.courseId;
-    Course
-        .findOne({_id: id})
-        .select('-__v')
-        .exec(function (err, doc) {
-            var response = {
-                status: 200,
-                message: doc
-            };
-            if (err) {
-                response.status = 500;
-                response.message = err;
-            } else if (!doc) {
-                response.status = 404;
-                response.message = {
-                    "message": "course id not found " + id
-                };
-            }
-            res.status(response.status)
-                .json(response.message);
-        });
+    if(mongoose.Types.ObjectId.isValid(id)){
+        Course
+            .findOne({_id: id})
+            .select('-__v')
+            .exec(function (err, doc) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else if (!doc) {
+                    res.status(404).send({msg: "course id not found " + id});
+                } else {
+                    res.send(doc);
+                }
+            });
+    }else{
+        Course
+            .findOne({urlName: id})
+            .select('-__v')
+            .exec(function (err, doc) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                } else if (!doc) {
+                    res.status(404).send({msg: "course id not found " + id});
+                } else {
+                    res.send(doc);
+                }
+            });
+    }
+
 };

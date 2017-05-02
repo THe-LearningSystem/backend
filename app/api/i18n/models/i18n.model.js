@@ -5,7 +5,6 @@
  */
 var config = require('../../../config'),
     mongoose = require('mongoose'),
-    mongooseI18n = require('mongoose-i18n-localize'),
     uniqueValidator = require('mongoose-unique-validator'),
     Schema = mongoose.Schema;
 
@@ -16,9 +15,7 @@ var TranslationSchema = new Schema({
         required: true
     },
     values: {
-        type: String,
-        required: true,
-        i18n: true
+        type: Schema.Types.Mixed
     }
 
 });
@@ -33,7 +30,7 @@ var TranslationGroupSchema = new Schema({
     description: {
         type: String
     },
-    translation:[TranslationSchema]
+    translations: [TranslationSchema]
 
 });
 
@@ -50,11 +47,6 @@ var TranslationModuleSchema = new Schema({
     },
     groups: [TranslationGroupSchema]
 
-});
-
-
-TranslationModuleSchema.plugin(mongooseI18n, {
-    locales: config.languageOptions.languages, defaultLocale: config.languageOptions.default
 });
 TranslationModuleSchema.plugin(uniqueValidator);
 

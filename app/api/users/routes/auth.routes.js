@@ -4,7 +4,7 @@
  * Module dependencies
  */
 var auth = require('../controllers/users.authentication.controller');
-var users = require('../controllers/users.unique.controller');
+var users = require('../controllers/users.controller');
 
 module.exports = function (app, middleware) {
     app.route('/api/auth/signup')
@@ -16,5 +16,8 @@ module.exports = function (app, middleware) {
         .get(users.isUsernameUnique);
     app.route('/api/users/email/:email')
         .get(users.isEmailUnique);
-
+    app.route('/api/users/')
+        .get(middleware.acl(), users.getUsers);
+    app.route('/api/users/:userId')
+        .put(users.update);
 };

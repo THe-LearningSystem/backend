@@ -5,7 +5,6 @@
  */
 var config = require('../../../config'),
     mongoose = require('mongoose'),
-    mongooseI18n = require('mongoose-i18n-localize'),
     uniqueValidator = require('mongoose-unique-validator'),
     Schema = mongoose.Schema;
 
@@ -26,22 +25,16 @@ var SectionsSchema = new Schema({
         trim: true
     },
     lessons:[LessonsSchema]
+
 });
 var CourseSchema = new Schema({
     name: {
-        type: String,
-        required: true,
-        i18n: true,
-        unique: true
-    },
-    test: {
-        type: String,
-        i18n: true
+        type: Schema.Types.Mixed,
+        required:true
     },
     description: {
-        type: String,
-        default: '',
-        trim: true
+        type: Schema.Types.Mixed,
+        required:true
     },
     urlName: {
         type: String,
@@ -51,11 +44,17 @@ var CourseSchema = new Schema({
             sparse: true
         }
     },
+    // author:{
+    //     type:string
+    // },
+    // moderators:[{
+    //     type:string
+    // }],
+    // tools:,
+    // notifications:,
+    // questionAndAnswers:,
     sections: [SectionsSchema]
 
-});
-CourseSchema.plugin(mongooseI18n, {
-    locales: config.languageOptions.languages, defaultLocale: config.languageOptions.default
 });
 CourseSchema.plugin(uniqueValidator);
 

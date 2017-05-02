@@ -11,7 +11,7 @@ exports.simplifiedJson = function (badJson) {
     if (badJson.length === undefined) {
         _.forEach(badJson.groups, function (group) {
             myJSON[group.name] = {};
-            _.forEach(group.translation, function (translation) {
+            _.forEach(group.translations, function (translation) {
                 myJSON[group.name][translation.name] = translation.values;
             });
         });
@@ -20,7 +20,7 @@ exports.simplifiedJson = function (badJson) {
             myJSON[module.name] = {};
             _.forEach(module.groups, function (group) {
                 myJSON[module.name][group.name] = {};
-                _.forEach(group.translation, function (translation) {
+                _.forEach(group.translations, function (translation) {
                     myJSON[module.name][group.name][translation.name] = translation.values;
                 });
             })

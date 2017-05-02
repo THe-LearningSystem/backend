@@ -59,7 +59,11 @@ module.exports.acl = function (option) {
                         }) !== -1) {
                         next();
                     } else {
-                        return res.status(403).end();
+                        if (option === undefined) {
+                            next();
+                        } else {
+                            return res.status(403).end();
+                        }
                     }
                 })
         })(req, res, next);

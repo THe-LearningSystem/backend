@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 
-var SectionsSchema = new Schema({
+var LessonSchema = new Schema({
     name: {
         type: String,
         required: true
@@ -26,4 +26,4 @@ var SectionsSchema = new Schema({
         }
     }
 });
-mongoose.model('SectionsSchema', SectionsSchema);
+mongoose.model('Lesson', LessonSchema);
