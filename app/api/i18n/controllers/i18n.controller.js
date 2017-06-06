@@ -27,24 +27,20 @@ exports.create = function (req, res) {
 };
 
 exports.updateModule = function (req, res) {
-    TranslationModule
-        .findById(req.params.translationModuleId)
-        .exec(function (err, translationModule) {
+    TranslationModule.findOneAndUpdate(
+        {
+            "_id": req.params.translationModuleId
+        },
+        req.body,
+        {},
+        function (err, translationModule) {
             if (err) {
-                res.status(500).send({msg: err});
+                res.send({msg: 'Couldnt update Course'});
             } else {
-                translationModule.name = req.body.name;
-                translationModule.description = req.body.description;
-                translationModule.save(function (err, doc) {
-                    if (err) {
-                        res.status(500).send({msg: 'Didnt update Translation'});
-                    } else {
-                        res.send({msg: 'Updated Translation'});
-                    }
-                })
-
+                res.send({msg: "Updated Course",obj:translationModule});
             }
-        });
+        }
+    );
 };
 
 exports.deleteModule = function (req, res) {
@@ -273,9 +269,8 @@ exports.deleteTranslation = function (req, res) {
             } else {
                 var group = translationModule.groups.id(req.params.translationGroupId);
                 var translationId = group.translations.id(req.params.translationId);
-                if (_.find(group.translations, {_id: translationId}) !== undefined) {
-                    var translation = _.find(group.translations, {_id: translationId});
-                    group.translations.remove(translation);
+                if (group.translations.id(req.params.translationId) !== undefined) {
+                    group.translations.id(req.params.translationId).remove();
                     translationModule.save(function (err, updatedSchema) {
                         if (err) {
                             res.status(500).json({msg: 'Didnt update Translation'});

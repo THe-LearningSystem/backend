@@ -12,6 +12,16 @@ var validateEmail = function (email) {
     return re.test(email);
 };
 
+var UserEnrolledCourseSchema = new Schema({
+    courseId:{
+        type: Schema.Types.ObjectId,
+        ref: "Course"
+    },
+    passedLessons:[{
+        type: Schema.Types.ObjectId,
+        ref: "Lessons"
+    }]
+});
 
 /**
  * User Schema
@@ -35,7 +45,11 @@ var UserSchema = new Schema({
     roles: [{
         type: Schema.Types.ObjectId,
         ref: "Role"
-    }]
+    }],
+    preferredLanguage:{
+        type:String
+    },
+    enrolledCourses:[UserEnrolledCourseSchema]
 });
 
 //TODO: check if user is allowed to give that role

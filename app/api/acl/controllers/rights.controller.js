@@ -9,10 +9,9 @@ var _ = require('lodash'),
 
 exports.create = function (req, res) {
     var right = new Right(req.body);
-console.log(right);
     right.save(function (err) {
         if (err) {
-            res.send({msg: err});
+            res.send({msg: "",err:err});
         } else {
             res.json({msg: "Created Right successful."});
         }
@@ -40,8 +39,7 @@ exports.update = function (req, res) {
                 res.status(500)
                     .json(err);
             } else {
-                right.name = req.body.name;
-                right.description = req.body.description;
+                right = req.body;
                 right.save(function () {
                     if (err) {
                         res.send({msg: err});

@@ -7,23 +7,41 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 
-var LessonSchema = new Schema({
+exports.LessonsSchema = new Schema({
     name: {
-        type: String,
+        type: Schema.Types.Mixed,
         required: true
     },
-    description: {
-        type: String,
-        default: '',
-        trim: true
+    position: {
+        type: Number
     },
-    urlName: {
-        type: String,
-        required: true,
-        index: {
-            unique: true,
-            sparse: true
+    isPublished:{
+        type:Boolean,
+        required:true
+    }
+}, {discriminatorKey: 'kind'});
+var Lesson = mongoose.model('Lesson', this.LessonsSchema);
+
+exports.ContentLesson = Lesson.discriminator('content', new Schema({
+    data: {
+        content: {
+            type: Schema.Types.Mixed,
+            required: true
         }
     }
-});
-mongoose.model('Lesson', LessonSchema);
+}));
+exports.QuizLesson = Lesson.discriminator('quiz', new Schema({
+    data: {
+        question: {
+            type: Schema.Types.Mixed,
+            required: true
+        },
+        answers: [{
+            type: Schema.Types.Mixed,
+            required: true
+        }],
+        rightAnswerIndex: {
+            type: Number
+        }
+    }
+}));

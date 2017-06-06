@@ -19,5 +19,14 @@ module.exports = function (app, middleware) {
     app.route('/api/users/')
         .get(middleware.acl(), users.getUsers);
     app.route('/api/users/:userId')
+        .get(users.get)
         .put(users.update);
+
+    app.route('/api/users/:userId/courses/:courseId')
+        .get(users.getEnrolledCourses)
+        .post(users.enrollToCourse);
+
+    app.route('/api/users/:userId/courses/:courseId/lessons/:lessonId')
+        .post(users.addPassedLesson)
+        .delete(users.removePassedLesson);
 };

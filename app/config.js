@@ -66,7 +66,7 @@ function initConfig() {
             }
         },
         languageOptions: {
-            languages: ['de', 'en'],
+            languages: ['de', 'en','es','fr','ru'],
             default: 'de'
         },
         files: {
