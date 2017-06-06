@@ -50,8 +50,8 @@ var getGlobbedPaths = function (globPatterns, excludes) {
 
 function initConfig() {
     return {
-        jwt:{
-            secret:'nodeauthsecret',
+        jwt: {
+            secret: 'nodeauthsecret',
             expiration: '24h'
         },
         server: {
@@ -65,11 +65,15 @@ function initConfig() {
                 pass: ''
             }
         },
+        languageOptions: {
+            languages: ['de', 'en','es','fr','ru'],
+            default: 'de'
+        },
         files: {
             middleware: getGlobbedPaths(path.join(__dirname, 'middleware/*.middleware.js')),
             config: getGlobbedPaths(path.join(__dirname, 'api/*/config/*.js')),
-            models: getGlobbedPaths(path.join(__dirname, 'api/*/models/*.js')),
-            routes: getGlobbedPaths(path.join(__dirname, 'api/*/routes/*.js'))
+            models: getGlobbedPaths(path.join(__dirname, 'api/*/models/*.model.js')),
+            routes: getGlobbedPaths(path.join(__dirname, 'api/*/routes/*.routes.js'))
         },
         // Expose configuration utilities
         utils: {

@@ -28,6 +28,25 @@ mongoose.connect(function () {
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(morgan('dev'));
     app.use(passport.initialize());
+    app.use(middleware.isAuthenticated());
+
+    // write cleaned languages to request
+    // app.use(function(req,res,next){
+    //     var langArray =[];
+    //     if(req.isSignedIn && req.user.preferredLanguage){
+    //         next();
+    //     }else{
+    //         _.forEach(req.acceptsLanguages(),function(acceptedLanguage){
+    //             _.forEach(config.languageOptions.languages,function(allowedLanguage){
+    //                 if(allowedLanguage === acceptedLanguage){
+    //                     langArray.push(acceptedLanguage);
+    //                 }
+    //             })
+    //         });
+    //     }
+    //     req.languages = langArray;
+    //     next();
+    // });
 
     //Importe routes
     _.forEach(config.files.routes, function (routePath) {

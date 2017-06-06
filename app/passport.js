@@ -10,7 +10,7 @@ var opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
 opts.secretOrKey = config.jwt.secret;
 passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
-    User.findById(jwt_payload.id, function (err, user) {
+    User.findById(jwt_payload.user._id, function (err, user) {
         if (err) {
             console.log(err);
             return done(err, false);
@@ -18,6 +18,7 @@ passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
         if (user) {
             done(null, user);
         } else {
+            console.log("asd");
             done(null, false);
         }
     });

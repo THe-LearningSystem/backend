@@ -5,12 +5,14 @@
  */
 var _ = require('lodash'),
     password = require('passport'),
+    passwordJwtStrategies = require('../passport'),
     User = require('../api/users/models/users.model'),
     Right = require('../api/acl/models/rights.model');
 
 module.exports.acl = function (option) {
     return function (req, res, next) {
         password.authenticate('jwt', {session: false}, function (err, user) {
+            console.log(user,err);
             if (err) {
                 return next(err);
             }
@@ -58,9 +60,33 @@ module.exports.acl = function (option) {
                         }) !== -1) {
                         next();
                     } else {
-                        return res.status(403).end();
+                        if (option === undefined) {
+                            next();
+                        } else {
+                            return res.status(403).end();
+                        }
                     }
                 })
+        })(req, res, next);
+    }
+};
+
+module.exports.isAuthenticated = function () {
+    return function (req, res, next) {
+        password.authenticate('jwt', {session: false}, function (err, user) {
+            req.isSignedIn = false;
+            if (err || !user) {
+                next() ;
+            }else{
+                req.isSignedIn = true;
+                User
+                    .findById(user._id)
+                    .exec(function (err, user) {
+                        req.user = user;
+                        next();
+                    });
+            }
+
         })(req, res, next);
     }
 };

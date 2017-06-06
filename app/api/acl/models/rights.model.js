@@ -20,4 +20,3 @@ var RightsSchema = new Schema({
     }
 });
 mongoose.model('Right', RightsSchema);
-

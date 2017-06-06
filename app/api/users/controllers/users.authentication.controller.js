@@ -17,18 +17,18 @@ var _this = this;
  * Signup
  */
 exports.signup = function (req, res) {
+    console.log(req.body);
     if (!req.body.username || !req.body.password) {
         res.json({success: false, msg: 'Please pass username and password.'});
     } else {
-        var newUser = new User({
-            username: req.body.username,
-            password: req.body.password
-        });
+        var newUser = new User(req.body);
         console.log(newUser);
         // save the user
+        newUser.roles.push(mongoose.Types.ObjectId("58ffdddad038712cc0738a7e"));
         newUser.save(function (err) {
             if (err) {
-                return res.json({success: false, msg: 'Username already exists.'});
+                console.log(err);
+                return res.json(err);
             } else {
                 res.json({success: true, msg: 'Successful created new user.'});
                 console.log("created user");
@@ -43,7 +43,7 @@ exports.signup = function (req, res) {
 exports.signin = function (req, res, next) {
     User.findOne({
         username: req.body.username
-    }, ['username', '_id', 'password'], function (err, user) {
+    }, function (err, user) {
         if (err) throw err;
 
         if (!user) {
@@ -53,9 +53,9 @@ exports.signin = function (req, res, next) {
             user.comparePassword(req.body.password, function (err, isMatch) {
                 if (isMatch && !err) {
                   var  tokenUser = {};
-                  tokenUser.id = user._id;
+                  tokenUser.password = undefined;
+                  tokenUser.user = user;
                   tokenUser.username = user.username;
-
                     _this.getUserRights(user._id, function (rights) {
                         if(rights.length > 0){
                             tokenUser.rights = rights;
@@ -65,7 +65,7 @@ exports.signin = function (req, res, next) {
                         var token = jwt.sign(tokenUser, config.jwt.secret, {expiresIn: config.jwt.expiration});
                         // return the information including token as JSON
 
-                        res.json({success: true, token: 'JWT ' + token});
+                        res.json({success: true, msg: 'Signin successful.', token: 'JWT ' + token});
                     });
 
                 } else {
