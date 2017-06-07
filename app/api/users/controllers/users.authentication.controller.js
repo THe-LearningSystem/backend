@@ -53,9 +53,10 @@ exports.signin = function (req, res, next) {
             user.comparePassword(req.body.password, function (err, isMatch) {
                 if (isMatch && !err) {
                   var  tokenUser = {};
-                  tokenUser.password = undefined;
                   tokenUser.user = user;
-                  tokenUser.username = user.username;
+                    tokenUser.user.password = undefined;
+                    // delete tokenUser.user.password;
+                    tokenUser.username = user.username;
                     _this.getUserRights(user._id, function (rights) {
                         if(rights.length > 0){
                             tokenUser.rights = rights;
