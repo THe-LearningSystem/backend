@@ -152,40 +152,25 @@ exports.enrollToCourse = function (req, res) {
 };
 
 exports.addPassedLesson = function (req, res) {
-    User
-        .findById(req.params.userId)
-        .exec(function (err, user) {
+    User.findOneAndUpdate(
+        {
+            "_id": req.user._id,
+            "enrolledCourses.courseId": req.params.courseId
+        },
+        {
+            $push: {"enrolledCourses.$.passedLessons": req.body}
+        },
+        {
+            new: true
+        },
+        function (err, user) {
             if (err) {
-                res.status(500).json({msg: "Cant add Lesson to User", err: err});
+                res.send({msg: "problem", err: err});
             } else {
-                var enrolledCourse = null;
-                var id = mongoose.Types.ObjectId(req.params.courseId);
-                if (_.find(user.enrolledCourses, {courseId: id}) !== undefined) {
-                    enrolledCourse = _.find(user.enrolledCourses, {courseId: id});
-                    var lessonId = mongoose.Types.ObjectId(req.params.lessonId);
-                    var foundLesson = false;
-                    _.forEach(enrolledCourse.passedLessons, function (lesson) {
-                        if (lesson == req.params.lessonId) {
-                            foundLesson = true;
-                        }
-                    });
-                    if(!foundLesson){
-                        enrolledCourse.passedLessons.push(lessonId);
-                        user.save(function () {
-                            if (err) {
-                                res.status(500).json({msg: "Couldnt add passed Lesson to user", err: err});
-                            } else {
-                                res.json({msg: "Sucessfull enrolled"});
-                            }
-                        });
-                    } else {
-                        res.status(500).json({msg: "Already passed the lesson"});
-                    }
-                } else {
-                    res.status(500).json({msg: "Not enrolled to course", err: err});
-                }
+                res.send({msg: "Section updated", obj: user});
             }
-        });
+        }
+    )
 };
 
 exports.removePassedLesson = function (req, res) {

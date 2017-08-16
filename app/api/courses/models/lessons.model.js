@@ -15,9 +15,9 @@ exports.LessonsSchema = new Schema({
     position: {
         type: Number
     },
-    isPublished:{
-        type:Boolean,
-        required:true
+    isPublished: {
+        type: Boolean,
+        required: true
     }
 }, {discriminatorKey: 'kind'});
 var Lesson = mongoose.model('Lesson', this.LessonsSchema);
@@ -42,6 +42,22 @@ exports.QuizLesson = Lesson.discriminator('quiz', new Schema({
         }],
         rightAnswerIndex: {
             type: Number
+        }
+    }
+}));
+exports.AutomatonLesson = Lesson.discriminator('automaton', new Schema({
+    data: {
+        question: {
+            type: Schema.Types.Mixed,
+            required: true
+        },
+        questionType:{
+            type:Number,
+            required:true
+        },
+        automaton: {
+            type: Schema.Types.Mixed,
+            required: true
         }
     }
 }));

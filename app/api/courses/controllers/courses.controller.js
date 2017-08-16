@@ -17,9 +17,9 @@ exports.create = function (req, res) {
     course.author = req.user;
     course.save(function (err) {
         if (err) {
-            return res.status(500).json({msg: err, err: err});
+            res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
         } else {
-            res.json({msg: "Created Course", obj: course});
+            res.send({msg: req.resMsgs.courseCreated, obj: course});
         }
     });
 };
@@ -103,9 +103,9 @@ exports.update = function (req, res) {
         {},
         function (err, course) {
             if (err) {
-                res.send({msg: 'Couldnt update Course'});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Updated Course"});
+                res.send({msg: req.resMsgs.courseUpdated, obj: course});
             }
         }
     );
@@ -128,9 +128,9 @@ exports.createSection = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Section updated", obj: course});
+                res.send({msg: req.resMsgs.sectionCreated, obj: course});
             }
         }
     )
@@ -147,9 +147,9 @@ exports.updateSection = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Section updated", obj: course});
+                res.send({msg: req.resMsgs.sectionUpdated, obj: course});
             }
         }
     )
@@ -167,9 +167,9 @@ exports.deleteSection = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Section updated", obj: course});
+                res.send({msg: req.resMsgs.sectionDeleted, obj: course});
             }
         }
     );
@@ -191,9 +191,9 @@ exports.createTool = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem tool", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Tool updated", obj: course});
+                res.send({msg: req.resMsgs.toolCreated, obj: course});
             }
         }
     )
@@ -209,9 +209,9 @@ exports.updateTool = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Tool updated", obj: course});
+                res.send({msg: req.resMsgs.toolUpdated, obj: course});
             }
         }
     )
@@ -228,9 +228,9 @@ exports.deleteTool = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Tool deleted", obj: course});
+                res.send({msg: req.resMsgs.toolDeleted, obj: course});
             }
         }
     );
@@ -252,9 +252,9 @@ exports.createNotification = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem tool", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Notification created", obj: course});
+                res.send({msg: req.resMsgs.notificationCreated, obj: course});
             }
         }
     );
@@ -270,9 +270,9 @@ exports.updateNotification = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Tool updated", obj: course});
+                res.send({msg: req.resMsgs.notificationUpdated, obj: course});
             }
         }
     )
@@ -289,9 +289,9 @@ exports.deleteNotification = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Tool deleted", obj: course});
+                res.send({msg: req.resMsgs.notificationDeleted, obj: course});
             }
         }
     );
@@ -315,9 +315,9 @@ exports.createQuestion = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem tool", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Notification created", obj: course});
+                res.send({msg: req.resMsgs.questionCreated, obj: course});
             }
         }
     );
@@ -333,9 +333,9 @@ exports.updateQuestion = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Tool updated", obj: course});
+                res.send({msg: req.resMsgs.questionUpdated, obj: course});
             }
         }
     )
@@ -352,24 +352,13 @@ exports.deleteQuestion = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Tool deleted", obj: course});
+                res.send({msg: req.resMsgs.questionDeleted, obj: course});
             }
         }
     );
 };
-
-var _getOneQuestion = function (req, res, course, callback) {
-    var id = mongoose.Types.ObjectId(req.params.questionAndAnswersId);
-    if (_.find(course.questionsAndAnswers, {_id: id}) !== undefined) {
-        var question = _.find(course.questionsAndAnswers, {_id: id});
-        callback(question);
-    } else {
-        res.send({msg: "Coultnt find Question"});
-    }
-};
-
 
 exports.createAnswer = function (req, res) {
     Course.findOneAndUpdate(
@@ -383,9 +372,9 @@ exports.createAnswer = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem tool", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Notification created", obj: course});
+                res.send({msg: req.resMsgs.answerCreated, obj: course});
             }
         }
     );
@@ -402,9 +391,9 @@ exports.updateAnswer = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem tool", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Notification created", obj: course});
+                res.send({msg: req.resMsgs.answerUpdated, obj: course});
             }
         }
     );
@@ -422,9 +411,9 @@ exports.deleteAnswer = function (req, res) {
         },
         function (err, course) {
             if (err) {
-                res.send({msg: "problem", err: err});
+                res.status(500).send({msg: req.resMsgs.problemWithRequest, err: err});
             } else {
-                res.send({msg: "Tool deleted", obj: course});
+                res.send({msg: req.resMsgs.answerDeleted, obj: course});
             }
         }
     );

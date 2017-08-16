@@ -12,7 +12,6 @@ var config = require('./config'),
     morgan = require('morgan'),
     passport = require('passport'),
     cookieParser = require('cookie-parser'),
-    middleware = require('./middleware/middlewares'),
     cors = require('cors');
 
 
@@ -20,6 +19,7 @@ mongoose.connect(function () {
     var app = express();
     app.use(cors({origin: 'http://localhost:8080'}));
 
+    var middleware = require('./middleware/middlewares');
 
     //Add Middlewares
     app.use(bodyParser.json());
@@ -29,23 +29,30 @@ mongoose.connect(function () {
     app.use(morgan('dev'));
     app.use(passport.initialize());
     app.use(middleware.isAuthenticated());
+    app.use(middleware.translations());
 
-    // write cleaned languages to request
-    // app.use(function(req,res,next){
-    //     var langArray =[];
-    //     if(req.isSignedIn && req.user.preferredLanguage){
-    //         next();
-    //     }else{
-    //         _.forEach(req.acceptsLanguages(),function(acceptedLanguage){
-    //             _.forEach(config.languageOptions.languages,function(allowedLanguage){
-    //                 if(allowedLanguage === acceptedLanguage){
-    //                     langArray.push(acceptedLanguage);
-    //                 }
-    //             })
-    //         });
-    //     }
-    //     req.languages = langArray;
-    //     next();
+    // // write cleaned languages to request
+    // // app.use(function(req,res,next){
+    // //     var langArray =[];
+    // //     if(req.isSignedIn && req.user.preferredLanguage){
+    // //         next();
+    // //     }else{
+    // //         _.forEach(req.acceptsLanguages(),function(acceptedLanguage){
+    // //             _.forEach(config.languageOptions.languages,function(allowedLanguage){
+    // //                 if(allowedLanguage === acceptedLanguage){
+    // //                     langArray.push(acceptedLanguage);
+    // //                 }
+    // //             })
+    // //         });
+    // //     }
+    // //     req.languages = langArray;
+    // //     next();
+    // // });
+    // //load Backendtranslations
+    // app.use(function (req, res, next) {
+    //     //check here if there are params
+    //     //check here if there are params
+    //
     // });
 
     //Importe routes

@@ -37,6 +37,18 @@ exports.create = function (req, res) {
                 res.json({msg: "Content created", obj: quiz});
             }
         });
+    } else if (type === 'automaton') {
+        var automaton = new LessonModel.AutomatonLesson(req.body);
+        automaton.save(function (err) {
+            if (err) {
+                console.log(err);
+                return res.status(422).send({
+                    msg: err
+                });
+            } else {
+                res.json({msg: "Content created", obj: automaton});
+            }
+        });
     } else {
         res.status(500).send({msg: 'Error no correct type specified'});
     }
