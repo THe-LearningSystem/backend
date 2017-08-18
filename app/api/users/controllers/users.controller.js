@@ -136,7 +136,7 @@ exports.enrollToCourse = function (req, res) {
             } else {
                 var id = mongoose.Types.ObjectId(req.params.courseId);
                 if (_.find(user.enrolledCourses, {courseId: id}) === undefined) {
-                    user.enrolledCourses.push({courseId: id, passedLessons: []});
+                    user.enrolledCourses.push({courseId: id, lessonData: []});
                     user.save(function () {
                         if (err) {
                             res.status(500).json({msg: "Not successfull enrolled", err: err});
@@ -158,7 +158,7 @@ exports.addPassedLesson = function (req, res) {
             "enrolledCourses.courseId": req.params.courseId
         },
         {
-            $push: {"enrolledCourses.$.passedLessons": req.body}
+            $push: {"enrolledCourses.$.lessonData": req.body}
         },
         {
             new: true
@@ -186,13 +186,13 @@ exports.removePassedLesson = function (req, res) {
                     enrolledCourse = _.find(user.enrolledCourses, {courseId: id});
                     var lessonId = mongoose.Types.ObjectId(req.params.lessonId);
                     var foundLesson = false;
-                    _.forEach(enrolledCourse.passedLessons, function (lesson) {
+                    _.forEach(enrolledCourse.lessonData, function (lesson) {
                         if (lesson == req.params.lessonId) {
                             foundLesson = true;
                         }
                     });
                     if(foundLesson){
-                        enrolledCourse.passedLessons.pull(lessonId);
+                        enrolledCourse.lessonData.pull(lessonId);
                         user.save(function () {
                             if (err) {
                                 res.status(500).json({msg: "Couldnt remove passed Lesson to user", err: err});

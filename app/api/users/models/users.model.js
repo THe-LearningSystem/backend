@@ -17,7 +17,7 @@ var UserEnrolledCourseSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Course"
     },
-    passedLessons: [{
+    lessonData: [{
         _id: {
             type: Schema.Types.ObjectId,
             ref: "Lessons"
