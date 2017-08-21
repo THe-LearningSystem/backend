@@ -27,6 +27,7 @@ module.exports = function (app, middleware) {
         .post(users.enrollToCourse);
 
     app.route('/api/users/:userId/courses/:courseId/lessons/:lessonId')
-        .post(users.addPassedLesson)
-        .delete(users.removePassedLesson);
+        .post(users.addPassedLesson);
+        //not used anymore we dont remove passed lessons at the moment
+        //.delete(users.removePassedLesson);
 };

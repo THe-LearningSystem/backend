@@ -117,8 +117,8 @@ exports.getEnrolledCourses = function(req,res){
             } else {
                 var enrolledCourse = null;
                 var id = mongoose.Types.ObjectId(req.params.courseId);
-                if (_.find(user.enrolledCourses, {courseId: id}) !== undefined) {
-                    enrolledCourse = _.find(user.enrolledCourses, {courseId: id});
+                if (_.find(user.enrolledCourses, {_id: id}) !== undefined) {
+                    enrolledCourse = _.find(user.enrolledCourses, {_id: id});
                        res.json(enrolledCourse);
                 } else {
                     res.json(null);
@@ -135,8 +135,8 @@ exports.enrollToCourse = function (req, res) {
                 res.status(500).json({msg: "Cant enroll Course", err: err});
             } else {
                 var id = mongoose.Types.ObjectId(req.params.courseId);
-                if (_.find(user.enrolledCourses, {courseId: id}) === undefined) {
-                    user.enrolledCourses.push({courseId: id, lessonData: []});
+                if (_.find(user.enrolledCourses, {_id: id}) === undefined) {
+                    user.enrolledCourses.push({_id: id, lessonData: []});
                     user.save(function () {
                         if (err) {
                             res.status(500).json({msg: "Not successfull enrolled", err: err});
@@ -152,27 +152,44 @@ exports.enrollToCourse = function (req, res) {
 };
 
 exports.addPassedLesson = function (req, res) {
-    User.findOneAndUpdate(
-        {
-            "_id": req.user._id,
-            "enrolledCourses.courseId": req.params.courseId
-        },
-        {
-            $push: {"enrolledCourses.$.lessonData": req.body}
-        },
-        {
-            new: true
-        },
-        function (err, user) {
+    User
+        .findById(req.params.userId)
+        .exec(function (err, user) {
             if (err) {
-                res.send({msg: "problem", err: err});
+                res.status(500).json({msg: "Cant add Lesson to User", err: err});
             } else {
-                res.send({msg: "Section updated", obj: user});
+                var enrolledCourse = null;
+                var id = mongoose.Types.ObjectId(req.params.courseId);
+                if (_.find(user.enrolledCourses, {_id: id}) !== undefined) {
+                    enrolledCourse = _.find(user.enrolledCourses, {_id: id});
+                    var lessonId = mongoose.Types.ObjectId(req.params.lessonId);
+                    var foundLesson = false;
+                    var foundLessonIndex = null;
+                    _.forEach(enrolledCourse.lessonData, function (lesson,index) {
+                        if (lesson._id == req.params.lessonId) {
+                            foundLesson = true;
+                            foundLessonIndex = index;
+                        }
+                    });
+                    if(foundLesson){
+                        enrolledCourse.lessonData[foundLessonIndex].passed = req.body.passed;
+                        console.log("test");
+                    } else {
+                       enrolledCourse.lessonData.push(req.body);
+                    }
+                    user.save(function () {
+                        if (err) {
+                            res.status(500).json({msg: "Error updating user passed lessons", err: err});
+                        }
+                    });
+                } else {
+                    res.status(500).json({msg: "Not enrolled to course", err: err});
+                }
             }
-        }
-    )
+        });
 };
 
+//not used anymore. This method isnt updated
 exports.removePassedLesson = function (req, res) {
     User
         .findById(req.params.userId)

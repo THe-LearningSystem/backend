@@ -146,7 +146,7 @@ exports.verify = function (req, res) {
             .select('-__v')
             .exec(function (err, lesson) {
                 var passedLesson = lesson.data.rightAnswerIndex === parseInt(req.body.data.selectedAnswer);
-                res.send({msg:"Passsed Lesson",passedLesson:passedLesson});
+                res.send({msg:"Passsed Lesson",passedLesson:passedLesson,rightAnswerIndex:lesson.data.rightAnswerIndex});
             });
     }
 };

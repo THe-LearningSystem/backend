@@ -13,7 +13,7 @@ var validateEmail = function (email) {
 };
 
 var UserEnrolledCourseSchema = new Schema({
-    courseId: {
+    _id: {
         type: Schema.Types.ObjectId,
         ref: "Course"
     },
