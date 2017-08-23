@@ -123,6 +123,23 @@ exports.update = function (req, res) {
                 }
             });
     }
+    if (req.body.kind === 'automaton') {
+        console.log(req.body.data);
+        LessonModel.AutomatonLesson.findOneAndUpdate(
+            {
+                "_id": req.params.lessonId
+            },
+            req.body,
+            {},
+            function (err, lesson) {
+                if (err) {
+                    res.status(500)
+                        .json({mgs: "Didnt update Lesson", err: err});
+                } else {
+                    res.json({msg: "Updated Lesson", obj: lesson});
+                }
+            });
+    }
 };
 exports.delete = function (req, res) {
     LessonModel.LessonsSchema.remove({_id: req.params.lessonId}, function (err) {

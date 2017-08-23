@@ -44,7 +44,7 @@ exports.get = function (req, res) {
 exports.update = function (req, res) {
     User.update({_id: req.params.userId}, req.body, function (err, user) {
         if (err) {
-            res.send({msg: "couldnt update user",err:err});
+            res.send({msg: "couldnt update user", err: err});
         } else {
             res.send({msg: "Updated User successful."});
         }
@@ -108,7 +108,7 @@ exports.isEmailUnique = function (req, res) {
 /**
  * Lesson
  */
-exports.getEnrolledCourses = function(req,res){
+exports.getEnrolledCourses = function (req, res) {
     User
         .findById(req.params.userId)
         .exec(function (err, user) {
@@ -119,7 +119,7 @@ exports.getEnrolledCourses = function(req,res){
                 var id = mongoose.Types.ObjectId(req.params.courseId);
                 if (_.find(user.enrolledCourses, {_id: id}) !== undefined) {
                     enrolledCourse = _.find(user.enrolledCourses, {_id: id});
-                       res.json(enrolledCourse);
+                    res.json(enrolledCourse);
                 } else {
                     res.json(null);
                 }
@@ -165,21 +165,23 @@ exports.addPassedLesson = function (req, res) {
                     var lessonId = mongoose.Types.ObjectId(req.params.lessonId);
                     var foundLesson = false;
                     var foundLessonIndex = null;
-                    _.forEach(enrolledCourse.lessonData, function (lesson,index) {
+                    _.forEach(enrolledCourse.lessonData, function (lesson, index) {
                         if (lesson._id == req.params.lessonId) {
                             foundLesson = true;
                             foundLessonIndex = index;
                         }
                     });
-                    if(foundLesson){
+                    if (foundLesson) {
                         enrolledCourse.lessonData[foundLessonIndex].passed = req.body.passed;
                         console.log("test");
                     } else {
-                       enrolledCourse.lessonData.push(req.body);
+                        enrolledCourse.lessonData.push(req.body);
                     }
                     user.save(function () {
                         if (err) {
                             res.status(500).json({msg: "Error updating user passed lessons", err: err});
+                        } else {
+                            res.json({msg: "Sucessfull updated pass"});
                         }
                     });
                 } else {
@@ -208,7 +210,7 @@ exports.removePassedLesson = function (req, res) {
                             foundLesson = true;
                         }
                     });
-                    if(foundLesson){
+                    if (foundLesson) {
                         enrolledCourse.lessonData.pull(lessonId);
                         user.save(function () {
                             if (err) {
