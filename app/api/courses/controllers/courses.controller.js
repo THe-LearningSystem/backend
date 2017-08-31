@@ -94,6 +94,31 @@ exports.getOne = function (req, res) {
     });
 };
 
+exports.getModerators = function(req,res){
+    var id = req.params.courseId;
+    var selectObj = {};
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        selectObj = {_id: id};
+    } else {
+        selectObj = {urlName: id};
+    }
+    Course
+        .findOne(selectObj)
+        .select('-__v')
+        .exec(function (err, course) {
+            if (err) {
+                res.status(500).send(err);
+            } else if (!course) {
+                res.status(404).send({msg: "course id not found " + id});
+            } else {
+                var data ={};
+                data.author = course.author;
+                data.moderators = course.moderators;
+                res.send(data);
+            }
+        });
+}
+
 exports.update = function (req, res) {
     Course.findOneAndUpdate(
         {

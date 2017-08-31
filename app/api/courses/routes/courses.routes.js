@@ -13,7 +13,10 @@ module.exports = function (app, middleware) {
         .post(CoursesCtrl.create);
     app.route('/api/courses/:courseId')
         .get(CoursesCtrl.getOne)
-        .put(CoursesCtrl.update);
+        .put(middleware.isModerator(),CoursesCtrl.update);
+
+    app.route('/api/courses/:courseId/moderators')
+        .get(CoursesCtrl.getModerators);
 
     //Sections
     app.route('/api/courses/:courseId/sections')
