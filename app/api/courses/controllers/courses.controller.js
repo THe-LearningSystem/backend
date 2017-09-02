@@ -117,7 +117,7 @@ exports.getModerators = function(req,res){
                 res.send(data);
             }
         });
-}
+};
 
 exports.update = function (req, res) {
     Course.findOneAndUpdate(

@@ -17,7 +17,7 @@ var config = require('./config'),
 
 mongoose.connect(function () {
     var app = express();
-    app.use(cors({origin: 'http://localhost:8080'}));
+    app.use(cors({origin: config.webServer}));
 
     var middleware = require('./middleware/middlewares');
 

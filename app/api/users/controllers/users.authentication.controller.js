@@ -17,21 +17,17 @@ var _this = this;
  * Signup
  */
 exports.signup = function (req, res) {
-    console.log(req.body);
     if (!req.body.username || !req.body.password) {
         res.json({success: false, msg: 'Please pass username and password.'});
     } else {
         var newUser = new User(req.body);
-        console.log(newUser);
         // save the user
         newUser.roles.push(mongoose.Types.ObjectId("58ffdddad038712cc0738a7e"));
         newUser.save(function (err) {
             if (err) {
-                console.log(err);
                 return res.json(err);
             } else {
                 res.json({success: true, msg: 'Successful created new user.'});
-                console.log("created user");
             }
         });
     }
@@ -61,7 +57,6 @@ exports.signin = function (req, res, next) {
                         if(rights.length > 0){
                             tokenUser.rights = rights;
                         }
-                        console.log("signed in",rights,tokenUser);
                         // if user is found and password is right create a token
                         var token = jwt.sign(tokenUser, config.jwt.secret, {expiresIn: config.jwt.expiration});
                         // return the information including token as JSON
@@ -94,7 +89,6 @@ exports.getUserRights = function (userId, callback) {
         .exec(function (err, user) {
             var onlyRights = [];
             _.forEach(user.roles, function (role) {
-
                 _.forEach(role.rights, function (right) {
                     //lodash union didn't work strange so i wrote it mysqlf
                     if (onlyRights.length === 0) {
