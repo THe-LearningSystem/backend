@@ -136,7 +136,7 @@ exports.update = function (req, res) {
     }
 };
 exports.delete = function (req, res) {
-    LessonModel.LessonsSchema.remove({_id: req.params.lessonId}, function (err) {
+    Lesson.remove({_id: req.params.lessonId}, function (err) {
         if (err) {
             res.status(500)
                 .json({mgs: req.resMsgs.didntDeleteLesson, err: err});
