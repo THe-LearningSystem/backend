@@ -13,8 +13,21 @@ var path = require('path'),
 exports.getUsers = function (req, res) {
     User
         .find()
-        .select('-password -__v')
-        .populate('roles', '-rights -description -__v')
+        .select('-password -__v -preferredLanguage -enrolledCourses -roles')
+        .populate('roles', '-rights -description -__v ')
+        .exec(function (err, users) {
+            if (err) {
+                return res.status(422).send(err);
+            } else {
+                res.json(users);
+            }
+        });
+};
+
+exports.getUsersShort = function (req, res) {
+    User
+        .find()
+        .select('_id username')
         .exec(function (err, users) {
             if (err) {
                 return res.status(422).send(err);
