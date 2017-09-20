@@ -17,40 +17,37 @@ exports.create = function (req, res) {
         var content = new LessonModel.ContentLesson(req.body);
         content.save(function (err) {
             if (err) {
-                console.log(err);
                 return res.status(422).send({
                     msg: err
                 });
             } else {
-                res.send({msg: "Content created", obj: content});
+                res.send({msg: req.resMsgs.lessonCreated, obj: content});
             }
         });
     } else if (type === 'quiz') {
         var quiz = new LessonModel.QuizLesson(req.body);
         quiz.save(function (err) {
             if (err) {
-                console.log(err);
                 return res.status(422).send({
                     msg: err
                 });
             } else {
-                res.json({msg: "Content created", obj: quiz});
+                res.json({msg: req.resMsgs.lessonCreated, obj: quiz});
             }
         });
     } else if (type === 'automaton') {
         var automaton = new LessonModel.AutomatonLesson(req.body);
         automaton.save(function (err) {
             if (err) {
-                console.log(err);
                 return res.status(422).send({
                     msg: err
                 });
             } else {
-                res.json({msg: "Content created", obj: automaton});
+                res.json({msg: req.resMsgs.lessonCreated, obj: automaton});
             }
         });
     } else {
-        res.status(500).send({msg: 'Error no correct type specified'});
+        res.status(500).send({msg: req.resMsgs.noLessonTypeGiven});
     }
 };
 
@@ -68,7 +65,6 @@ exports.getAll = function (req, res) {
                 res.status(500)
                     .json(err);
             } else {
-                // var test = Course.schema.methods.toJSONLocalizedOnly(courses, 'de');
                 res.json(lessons);
             }
         });
@@ -100,14 +96,13 @@ exports.update = function (req, res) {
             function (err, lesson) {
                 if (err) {
                     res.status(500)
-                        .json({mgs: "Didnt update Lesson", err: err});
+                        .json({mgs: req.resMsgs.didntUpdateLesson, err: err});
                 } else {
-                    res.json({msg: "Updated Lesson", obj: lesson});
+                    res.json({msg: req.resMsgs.updatedLesson, obj: lesson});
                 }
             });
     }
     if (req.body.kind === 'quiz') {
-        console.log(req.body.data);
         LessonModel.QuizLesson.findOneAndUpdate(
             {
                 "_id": req.params.lessonId
@@ -117,14 +112,13 @@ exports.update = function (req, res) {
             function (err, lesson) {
                 if (err) {
                     res.status(500)
-                        .json({mgs: "Didnt update Lesson", err: err});
+                        .json({mgs: req.resMsgs.didntUpdateLesson, err: err});
                 } else {
-                    res.json({msg: "Updated Lesson", obj: lesson});
+                    res.json({msg: req.resMsgs.updatedLesson, obj: lesson});
                 }
             });
     }
     if (req.body.kind === 'automaton') {
-        console.log(req.body.data);
         LessonModel.AutomatonLesson.findOneAndUpdate(
             {
                 "_id": req.params.lessonId
@@ -134,27 +128,24 @@ exports.update = function (req, res) {
             function (err, lesson) {
                 if (err) {
                     res.status(500)
-                        .json({mgs: "Didnt update Lesson", err: err});
+                        .json({mgs: req.resMsgs.didntUpdateLesson, err: err});
                 } else {
-                    res.json({msg: "Updated Lesson", obj: lesson});
+                    res.json({msg: req.resMsgs.updatedLesson, obj: lesson});
                 }
             });
     }
 };
 exports.delete = function (req, res) {
-    LessonModel.LessonsSchema.remove({_id: req.params.lessonId}, function (err) {
+    Lesson.remove({_id: req.params.lessonId}, function (err) {
         if (err) {
             res.status(500)
-                .json({mgs: "Didnt delete Lesson", err: err});
+                .json({mgs: req.resMsgs.didntDeleteLesson, err: err});
         } else {
-            res.json({msg: "Deleted Lesson"});
+            res.json({msg: req.resMsgs.deletedLesson});
         }
     });
 };
-
-
 exports.verify = function (req, res) {
-    console.log(req.body.data.rightAnswerIndex);
     if (req.body.kind === 'content') {
     }
     if (req.body.kind === 'quiz') {
@@ -162,8 +153,13 @@ exports.verify = function (req, res) {
             .findById(req.params.lessonId)
             .select('-__v')
             .exec(function (err, lesson) {
+                if(err){
+                    res.status(500)
+                        .send({mgs: null, err: err});
+                }else{
                 var passedLesson = lesson.data.rightAnswerIndex === parseInt(req.body.data.selectedAnswer);
-                res.send({msg:"Passsed Lesson",passedLesson:passedLesson,rightAnswerIndex:lesson.data.rightAnswerIndex});
+                res.send({msg:null,passedLesson:passedLesson,rightAnswerIndex:lesson.data.rightAnswerIndex});
+                }
             });
     }
 };

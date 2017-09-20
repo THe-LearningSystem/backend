@@ -18,6 +18,10 @@ module.exports = function (app, middleware) {
         .get(users.isEmailUnique);
     app.route('/api/users/')
         .get(middleware.acl(), users.getUsers);
+
+    app.route('/api/users/short')
+        .get(middleware.acl(), users.getUsersShort);
+
     app.route('/api/users/:userId')
         .get(users.get)
         .put(users.update);

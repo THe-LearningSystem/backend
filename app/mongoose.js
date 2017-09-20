@@ -10,11 +10,8 @@ var config = require('./config'),
 
 
 module.exports.connect = function (cb) {
-
     mongoose.Promise = global.Promise;
     mongoose.connect(config.db.uri, config.db.options, function (err) {
-
-
         if (err) {
             console.error('Could not connect to MongoDB!', err);
         } else {

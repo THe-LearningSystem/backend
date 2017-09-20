@@ -25,11 +25,14 @@ module.exports.isModerator = function () {
                 } else if (!course) {
                     res.status(404).send({msg: "course id not found " + id});
                 } else {
-                  if(req.user._id.equals(course.author)){
-                      next();
-                  }else{
-                      res.status(403).send({msg: "No Access" + id});
-                  }
+                    var moderator = _.find(course.moderators, function (o) {
+                        return req.user._id.equals(o);
+                    });
+                    if (req.user._id.equals(course.author) || moderator !== undefined) {
+                        next();
+                    } else {
+                        res.status(403).send();
+                    }
                 }
             });
     }

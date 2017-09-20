@@ -50,10 +50,13 @@ var getGlobbedPaths = function (globPatterns, excludes) {
 
 function initConfig() {
     return {
+        //Access-Control-Allow-Origin
+        webServer:'http://localhost:8080',
         jwt: {
             secret: 'nodeauthsecret',
             expiration: '24h'
         },
+        //On which port runs the backend server
         server: {
             port: 3000,
             rootPath: __dirname

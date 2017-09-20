@@ -109,13 +109,6 @@ var QuestionsAndAnswersSchema = new Schema({
     answers: [AnswerSchema]
 });
 
-var ModeratorSchema = new Schema({
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: "User"
-    }
-});
-
 var CourseSchema = new Schema({
     name: {
         type: Schema.Types.Mixed,
@@ -143,7 +136,10 @@ var CourseSchema = new Schema({
         ref: "User",
         required: true
     },
-    moderators: [ModeratorSchema],
+    moderators: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }],
     sections: [SectionsSchema],
     tools: [ToolSchema],
     notifications: [NotificationSchema],

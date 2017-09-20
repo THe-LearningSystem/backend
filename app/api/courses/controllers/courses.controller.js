@@ -69,11 +69,16 @@ var _getOneCourse = function (req, res, callback) {
         .populate(
             'questionsAndAnswers.user ' +
             'questionsAndAnswers.answers.user ' +
-            'sections.lessons',
+            'sections.lessons ' +
+            'moderators',
             '-__v -password ' +
             ' -preferredLanguage ' +
-            '-data')
+            '-data ' +
+            '-enrolledCourses ' +
+            '-roles ' +
+            '-email -roles')
         .exec(function (err, course) {
+            console.log(course.moderators);
             if (err) {
                 res.status(500).send(err);
             } else if (!course) {
@@ -94,7 +99,7 @@ exports.getOne = function (req, res) {
     });
 };
 
-exports.getModerators = function(req,res){
+exports.getModerators = function (req, res) {
     var id = req.params.courseId;
     var selectObj = {};
     if (mongoose.Types.ObjectId.isValid(id)) {
@@ -111,13 +116,13 @@ exports.getModerators = function(req,res){
             } else if (!course) {
                 res.status(404).send({msg: "course id not found " + id});
             } else {
-                var data ={};
+                var data = {};
                 data.author = course.author;
                 data.moderators = course.moderators;
                 res.send(data);
             }
         });
-}
+};
 
 exports.update = function (req, res) {
     Course.findOneAndUpdate(
@@ -409,7 +414,7 @@ exports.updateAnswer = function (req, res) {
         {
             "_id": req.params.courseId,
             "questionsAndAnswers._id": req.params.questionAndAnswersId,
-            "questionsAndAnswers._id.answers._id":req.params.answerId
+            "questionsAndAnswers._id.answers._id": req.params.answerId
         },
         {
             $set: {"questionsAndAnswers.$.answers.$": req.body}
